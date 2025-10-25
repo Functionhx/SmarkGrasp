@@ -1,0 +1,17 @@
+global_costmap:
+  global_frame: map 
+  robot_base_frame: base_link
+  update_frequency: 10.0
+  publish_frequency: 10.0
+  # resolution: 0.05
+
+  inflation_radius: 0.25 # 障碍物膨胀
+
+  transform_tolerance: 0.5  # 坐标变换容差为0.5秒
+  plugins:
+    - {name: static_layer,            type: "costmap_2d::StaticLayer"} # 静态地图层
+     #  使用RGBD传感器的时空体素层，用于动态障碍物检测
+    - {name: rgbd_obstacle_layer,     type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
+    - {name: inflation_layer,         type: "costmap_2d::InflationLayer"} # 膨胀层，扩展障碍物的影响范围
+
+ 

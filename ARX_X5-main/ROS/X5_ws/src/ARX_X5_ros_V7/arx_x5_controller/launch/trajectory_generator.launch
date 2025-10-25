@@ -1,0 +1,20 @@
+<launch>
+    <node pkg="arx_x5_controller" type="arx_control_node" name="arx_control_node" output="screen">
+        <param name="trajectory_generator/exp_velocity" value="0.2"/>
+        <param name="trajectory_generator/max_inactive_time" value="3.0" />
+        <param name="trajectory_generator/min_x" value="0.0"/>
+        <param name="trajectory_generator/max_x" value="0.5"/>
+        <param name="trajectory_generator/min_y" value="-0.5"/>
+        <param name="trajectory_generator/max_y" value="0.5"/>
+        <param name="trajectory_generator/min_z" value="-0.5"/>
+        <param name="trajectory_generator/max_z" value="0.5"/>
+        <param name="trajectory_generator/min_roll" value="-2.1"/>
+        <param name="trajectory_generator/max_roll" value="2.1"/>
+        <param name="trajectory_generator/min_pitch" value="-1.3"/>  
+        <param name="trajectory_generator/max_pitch" value="1.3"/>
+        <param name="trajectory_generator/min_yaw" value="-1.3"/>
+        <param name="trajectory_generator/max_yaw" value="1.3"/>
+        <param name="trajectory_generator/min_gripper" value="1"/>
+        <param name="trajectory_generator/max_gripper" value="5"/>
+    </node>
+</launch>

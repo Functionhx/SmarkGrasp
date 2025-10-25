@@ -1,0 +1,17 @@
+<launch>
+
+
+    <!-- Run the local trajectory planner -->
+    <node pkg="local_planner" type="local_planner" name="local_planner" respawn="true" output="screen" >
+        <param name="global_frame" value="map"/>
+        <param name="plan_frequency" value="50"/>
+        <param name="max_x_speed" value="0.2"/>
+        <param name="max_y_speed" value="0.2"/>
+        <param name="goal_dist_tolerance" value="0.1"/>
+        <param name="prune_ahead_distance" value="0.3"/>
+
+        <remap from="/base_vel" to="/ctrl_cmd" />
+        
+    </node>
+
+</launch>

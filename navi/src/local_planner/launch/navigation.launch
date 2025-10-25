@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<launch>
+  <!--Launch the move base with time elastic band-->
+  <node pkg="tf" type="static_transform_publisher" name="camera_init_to_map" args="0.0 0.0 0.0 0 0 0 map camera_init 100"/>
+  <node pkg="map_server" type="map_server" name="map_server" args="$(find local_planner)/map/garagy.yaml"/>
+
+  <node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen">
+    <rosparam file="$(find local_planner)/config/point_pid_params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find local_planner)/config/point_pid_params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find local_planner)/config/point_pid_params/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find local_planner)/config/point_pid_params/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find local_planner)/config/point_pid_params/teb_local_planner_params.yaml" command="load" />
+    
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="neutral_cost" value="220" />
+    <param name="planner_frequency" value="40.0" />
+    <param name="planner_patience" value="0.1" />
+    <param name="use_dijkstra" value="false" />
+    
+    <!-- <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <param name="controller_frequency" value="20.0" />
+    <param name="controller_patience" value="15.0" /> -->
+
+    <param name="clearing_rotation_allowed" value="false" />
+    <remap from="/cmd_vel" to="/" />
+  </node>
+
+  <include file="$(find local_planner)/launch/local_planner.launch"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find local_planner)/config/rviz/navi.rviz" />
+
+  <!-- <node pkg="rosbag" type="record" 
+      name="bag_record" 
+      args="topic
+      /cloud_base_link_no_ground
+      /cmd_vel
+      /local_planner/local_path
+      /map
+      /move_base/TrajectoryPlannerROS/global_plan
+      /move_base/GlobalPlanner/plan
+      /move_base/global_costmap/costmap
+      /move_base/global_costmap/rgbd_obstacle_layer/voxel_grid
+      /move_base/goal
+      /move_base/local_costmap/footprint
+      /move_base/local_costmap/costmap
+      /move_base_simple/goal
+      /tf
+      /tf_static
+      /topic
+                  -o /home/rm/bagfiles/sentry.bag"/> -->
+
+</launch>

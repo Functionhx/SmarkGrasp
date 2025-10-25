@@ -1,0 +1,17 @@
+<launch>
+    <!-- 离线点云处理节点 -->
+    <node pkg="pclfilter" type="depth_cluster_test" name="pcd_processor" output="screen">
+        <!-- 必须参数 -->
+        <param name="input_pcd" type="string" value="$(find pclfilter)/PCD/10w.pcd" />
+        
+        <!-- 输出路径参数 -->
+        <param name="ground_output" value="$(find pclfilter)/PCD/ground.pcd" />
+        <param name="cluster_output" value="$(find pclfilter)/PCD/clusters.pcd" />
+        
+        <!-- 算法参数 -->
+        <param name="angular_step" value="1" />
+        <param name="max_ground_height" value="0.2" />
+        <param name="min_cluster_size" value="32" />
+        <param name="max_cluster_size" value="20" />
+    </node>
+</launch>

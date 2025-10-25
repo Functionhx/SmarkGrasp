@@ -1,0 +1,7 @@
+<launch>
+ 
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find pclfilter)/config/simple_rviz.rviz" />
+
+    <node pkg="pclfilter" type="depth_cluster_node" name="depth_cluster_node" output="screen"/>
+
+</launch>

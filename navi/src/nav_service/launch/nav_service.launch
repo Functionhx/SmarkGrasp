@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="nav_service" pkg="nav_service" type="nav_service_node" output="screen"/>
+</launch>

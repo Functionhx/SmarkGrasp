@@ -1,0 +1,13 @@
+<!--yhs-->
+<launch>
+
+  <!-- 如果有超声波，安装的位置可能不同，打印“ultrasonic”话题，根据实际数据改变序号，空格隔开，
+      前右到右前默认[0~7]，逆时针，单位为毫米 -->
+  <arg name="ultrasonic_number_value" default="0 1 2 3 4 5 6 7" />
+
+  <node pkg="yhs_can_control" type="yhs_can_control_node" name="yhs_can_control_node"
+    output="screen">
+    <param name="ultrasonic_number" value="$(arg ultrasonic_number_value)" />
+  </node>
+
+</launch>

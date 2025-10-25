@@ -1,0 +1,110 @@
+# 基础配置
+#---(in meters)---
+#footprint: [ [0.254, -0.0508], [0.1778, -0.0508], [0.1778, -0.1778], [-0.1905, -0.1778], [-0.254, 0], [-0.1905, 0.1778], [0.1778, 0.1778], [0.1778, 0.0508], [0.254, 0.0508] ]
+#footprint: [ [-0.2,-0.2], [0.2,-0.2], [0.2,0.2], [-0.2,0.2] ]
+robot_radius: 0.4 # 机器人自身占地r
+transform_tolerance: 0.5  # TF容忍时间
+
+# 障碍层 (obstacle_layer)
+obstacle_layer:
+ enabled: true
+ obstacle_range: 2 # 将障碍物添加到代价地图的最大距离(米)
+ raytrace_range: 2.1
+ inflation_radius: 0.25 # 障碍物膨胀半径(米)
+ min_obstacle_height: -10 # 考虑为障碍物的高度范围 
+ max_obstacle_height: 10
+
+ track_unknown_space: false  # 探索未知区域timeout
+ combination_method: 1
+
+
+# ？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
+#  observation_sources: laser_scan_sensor
+#  laser_scan_sensor: {sensor_frame: laser, data_type: LaserScan, topic: /scan, marking: true, clearing: true}
+
+#  observation_sources: pointcloud2_sensor
+#  pointcloud2_sensor: {sensor_frame: body, data_type: PointCloud2, topic: /cloud_registered, marking: true, clearing: true}
+
+# 膨胀层 (inflation_layer)
+inflation_layer:
+  enabled:              true  # 启用膨胀层
+  cost_scaling_factor:  20.0  # 代价衰减因子，值越大衰减越快
+  inflation_radius:     0.25   # 从障碍物开始计算代价的最大距离(米)
+
+# 静态层 (static_layer)
+static_layer:
+  enabled:              true
+  map_topic:            "/map"
+# RGBD障碍层 (rgbd_obstacle_layer)
+rgbd_obstacle_layer:
+  enabled:               true
+  voxel_decay:           1      # 体素衰减时间(秒) 线性 or 指数e^n
+  decay_model:           0      # 0=linear, 1=exponential, -1=persistent
+  voxel_size:            0.05   # meters
+  track_unknown_space:   true   # 跟踪未知空间
+  observation_persistence: 0.0  # 旧数据保存时间
+  max_obstacle_height:   0.2    # 最大障碍物高度(米)
+  mark_threshold:        0      # voxel height
+  update_footprint_enabled: true # 更新机器人足迹
+  combination_method:    1      # 1=max, 0=override
+  obstacle_range:        10      # 障碍物检测范围(米)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              .0    #meters
+  origin_z:              0.25   # meters
+  publish_voxel_map:     true   # default off
+  transform_tolerance:   0.1    # seconds
+  mapping_mode:          false  # 不保存地图(仅用于导航)
+  map_save_duration:     60     # 自动保存地图的间隔(秒)
+  # 观测源配置
+  observation_sources:   rgbd1_clear rgbd1_mark
+  # rgbd1_mark:
+  rgbd1_mark:
+    data_type: PointCloud2
+    topic: /cloud_base_link_no_ground
+    # topic: /cloud_registered
+    ###############：指定功能`
+    marking: true
+    clearing: false
+    ###############
+    min_obstacle_height: -0.2     #default 0, meters
+    max_obstacle_height: 0.3   #defaule 3, meters
+    expected_update_rate: 0.0    #default 0, if not updating at this rate at least, remove from buffer
+    observation_persistence: 0.0 #default 0, use all measurements taken during now-value, 0=latest 
+    inf_is_valid: false          #default false, for laser scans
+    clear_after_reading: true    #default false, clear the buffer after the layer gets readings from it
+    filter: "voxel"              #default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommended to have at one filter on
+    voxel_min_points: 0          #default 0, minimum points per voxel for voxel filter
+  # rgbd1_clear:
+  rgbd1_clear:
+    enabled: true                #default true, can be toggled on/off with associated service call
+    data_type: PointCloud2
+    # topic: /cloud_registered
+    topic: /cloud_base_link_no_ground
+    ###############：指定功能
+    marking: false
+    clearing: true
+    ###############
+    min_z: -1                   # 考虑的高度范围(0-3米)
+    max_z: 1                   # 
+    vertical_fov_angle: 0.7      # 垂直视场角(弧度)
+    decay_acceleration: 0       #default 0, 1/s^2. If laser scanner MUST be 0
+    horizontal_fov_angle: 1.04   # 水平视场角(弧度)
+    model_type: 1                # 传感器模型类型(1表示3D激光雷达)
+
+#      参数是时空体素层(SpatioTemporalVoxelLayer)中用于动态调整体素衰减速率的参数。
+
+# 具体含义：
+
+# 单位是 1/s²（每秒的衰减加速度）
+# 控制体素衰减的二阶动态特性
+# 默认值为0，表示恒定衰减速率
+# 作用原理：
+
+# 正值(如1)表示衰减速率会随时间加速
+# 使得长时间未被观测到的体素会以加速度方式更快地从地图中消失
+# 适用于需要快速适应环境变化的场景
+# 注意事项：
+
+# 配置中明确指出：对于激光扫描仪(laser scanner)，此值必须设为0
+# 这是因为激光扫描仪通常提供更可靠的距离测量，不需要加速衰减
+# 值1.0表示使用的是深度相机或其他可能有噪声的传感器
+# 在您的配置中，设置为1.0并且model_type为1(3D激光雷达)，这可能需要根据实际传感器类型调整。如果确实使用的是激光雷达，应考虑将此值设为0。
+

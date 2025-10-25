@@ -378,4 +378,3 @@ rospy.set\_param('/log\_level', 'INFO')
 
 本项目采用 **Apache License 2.0** 开源协议，详见项目根目录下的 `LICENSE` 文件。
 
-> （注：文档部分内容可能由 AI 生成）
